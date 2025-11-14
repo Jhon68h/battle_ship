@@ -1,0 +1,107 @@
+/* War Mode Specific Styles */
+
+.war-mode h1 {
+    background: linear-gradient(135deg, #FF6B6B 0%, #EE5A6F 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.war-mode .game-board {
+    border-color: #FF6B6B;
+}
+
+.war-mode .cell {
+    width: 30px;
+    height: 30px;
+}
+
+.weapons-container {
+    background: #fff3e0;
+    border: 3px solid #FF6B6B;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.weapons-container h4 {
+    color: #FF6B6B;
+    margin-bottom: 15px;
+}
+
+.weapons-grid {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.weapon-btn {
+    padding: 12px 24px;
+    font-size: 1.1em;
+    font-weight: bold;
+    border: 3px solid #FF6B6B;
+    background: white;
+    color: #FF6B6B;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.weapon-btn:hover {
+    background: #FF6B6B;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(255, 107, 107, 0.3);
+}
+
+.weapon-btn.selected {
+    background: linear-gradient(135deg, #FF6B6B 0%, #EE5A6F 100%);
+    color: white;
+    box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+}
+
+.weapon-uses {
+    font-size: 0.9em;
+    opacity: 0.9;
+}
+
+.missile-orientation {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.attack-preview {
+    background: rgba(255, 107, 107, 0.3) !important;
+    border: 2px dashed #FF6B6B !important;
+    animation: pulse-attack 0.5s infinite;
+}
+
+@keyframes pulse-attack {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+@media (max-width: 1024px) {
+    .war-mode .cell {
+        width: 25px;
+        height: 25px;
+    }
+}
+
+@media (max-width: 768px) {
+    .war-mode .cell {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .weapons-grid {
+        flex-direction: column;
+    }
+    
+    .weapon-btn {
+        width: 100%;
+    }
+}

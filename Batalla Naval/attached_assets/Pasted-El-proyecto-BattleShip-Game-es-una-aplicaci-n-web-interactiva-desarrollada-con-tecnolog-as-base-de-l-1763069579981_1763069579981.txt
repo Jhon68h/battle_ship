@@ -1,0 +1,47 @@
+El proyecto BattleShip Game es una aplicación web interactiva desarrollada con tecnologías base de la web —HTML, CSS y JavaScript— que permite simular el clásico juego de estrategia naval “Batalla Naval”. Este proyecto tiene como propósito principal aplicar fundamentos de programación estructurada, diseño de interfaces gráficas y lógica algorítmica en un entorno accesible desde cualquier navegador moderno.
+El juego está diseñado para permitir a un jugador humano colocar sus naves en un tablero de 10x10 y enfrentarse a un oponente controlado por la computadora, que ubica sus naves de forma aleatoria. El usuario realiza disparos para intentar hundir las naves del oponente, mientras el sistema responde con disparos aleatorios al tablero del jugador.
+Este tipo de desarrollo resulta útil como ejercicio educativo en el contexto de cursos de desarrollo web, estructuras de datos, o inteligencia artificial básica, ya que combina aspectos de diseño visual, interacción dinámica y toma de decisiones automatizadas.
+El proyecto, aunque funcional, presenta oportunidades de mejora en la modularidad del código, la escalabilidad, la usabilidad, y la experiencia de usuario, lo que permitirá plantear en las siguientes fases propuestas de optimización significativas.
+
+2. Identificación de Necesidades
+2.1.Problema identificado
+El juego actual cumple la función básica de la Batalla Naval, pero carece de varias características que mejoren la experiencia del jugador y la calidad del código como producto de software.
+Entre los principales problemas identificados se encuentran:
+●	Código JavaScript monolítico y poco modular, lo que dificulta su mantenibilidad y reutilización.
+●	Ausencia de un sistema de estados que controle las etapas del juego (colocación de naves, ataque, fin del juego).
+●	Falta de validaciones visuales más claras para el usuario (por ejemplo, indicación de naves hundidas o turnos).
+●	Diseño visual básico sin adaptabilidad (no es responsive ni accesible).
+●	No se implementa persistencia del estado del juego ni puntuación.
+●	La lógica del oponente (PC) es puramente aleatoria, sin estrategias ni aprendizaje.
+●	No posee botones ni hoovers por los cuales guiarse a la hora de seleccionar una nave
+●	El flujo del juego no se entiende ya que no hay una guia
+●	Interfaz poco agradable para el usuario
+El problema, por tanto, consiste en mejorar la estructura, la interacción y la experiencia general del juego, transformando un prototipo funcional en una aplicación didáctica robusta, escalable y mantenible.
+
+2.2. Requerimientos Funcionales
+2.2.1. Requerimientos de alto nivel
+●	El sistema debe permitir que el usuario coloque sus naves sobre un tablero antes de iniciar el juego.
+●	El sistema debe generar posiciones aleatorias válidas para las naves del oponente (PC).
+●	El sistema debe permitir al usuario realizar disparos en el tablero enemigo y recibir retroalimentación inmediata (acierto o fallo).
+●	El sistema debe permitir que el PC responda automáticamente con un disparo aleatorio sobre el tablero del jugador.
+●	El sistema debe detectar el fin del juego cuando todas las naves de uno de los jugadores sean destruidas.
+●	El sistema debe mostrar visualmente los estados de las celdas (vacía, ocupada, golpe, fallo).
+●	El sistema debe bloquear interacciones inválidas (disparar sobre una celda ya atacada, colocar un barco fuera de el panel, colocar un barco sobre otro barco, permitir solo la cantidad de barcos establecida.).
+
+2.2.2 Requerimientos de nivel usuario
+·	Como jugador, quiero colocar mis naves en el tablero para preparar mi estrategia antes de iniciar la partida.
+·	Como jugador, quiero recibir una indicación visual cuando una posición es válida o no al colocar una nave para evitar errores y entender mejor el proceso.
+·	Como jugador, quiero que el sistema impida colocar naves superpuestas o fuera del tablero para asegurar que la configuración inicial sea correcta.
+·	Como jugador, quiero ver botones o controles para seleccionar el tipo de nave que deseo ubicar para entender cuántas naves puedo colocar y de qué tamaño.
+·	Como jugador, quiero que la interfaz muestre claramente en qué etapa del juego estoy (colocación, batalla, final) para no confundirme durante la partida.
+·	Como jugador, quiero recibir retroalimentación inmediata cuando disparo a una casilla enemiga para saber si hice un acierto o un fallo.
+·	Como jugador, quiero que el sistema me muestre cuándo una nave enemiga ha sido totalmente hundida para comprender mi progreso en la partida.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+·	Como jugador, quiero que la PC realice disparos automáticos DESPUES de que yo ataque para que el juego avance sin interrupciones.
+·	Como jugador quiero que los disparos de la PC no se repitan en casillas previamente seleccionadas para que el juego sea coherente y justo.
+·	Como jugador, quiero que la interfaz indique claramente las casillas donde he sido golpeado o donde la PC falló para seguir el estado del tablero.
+·	Como jugador, quiero un diseño visual más ordenado y agradable para tener una experiencia más cómoda y comprensible.
+·	Como jugador, quiero que el juego sea responsive para poder jugar desde un dispositivo móvil o una pantalla pequeña sin perder funcionalidad.
+·	Como jugador, quiero que el sistema me indique cuando he ganado o perdido la partida para cerrar el ciclo del juego de forma clara.
+·	Como jugador, quiero poder consultar instrucciones básicas o una guía rápida dentro del juego para entender cómo jugar sin necesidad de buscar información externa.
+·	Como jugador, quiero que la lógica de la PC sea más inteligente que solo disparos aleatorios para que la experiencia de juego sea más desafiante.
+·	Como jugador, quiero consultar partidas anteriores, puntuaciones y resultados almacenados en el local storage del navegador

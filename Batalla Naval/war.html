@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="battle-base.css" type="text/css" />
+        <link rel="stylesheet" href="war.css" type="text/css" />
+        <title>BattleShip - Modo Guerra</title>
+    </head>
+    <body>
+        <div class="game-container war-mode">
+            <header>
+                <h1>⚓ Batalla Naval - MODO GUERRA 💣</h1>
+                <div id="phaseDisplay" class="phase-display">Fase: Preparación</div>
+            </header>
+
+            <div id="message" class="message"></div>
+
+            <div class="boards-container">
+                <div class="board-section">
+                    <h3>Tu Tablero</h3>
+                    <div id="board" class="game-board"></div>
+                </div>
+
+                <div class="board-section">
+                    <h3>Tablero Enemigo</h3>
+                    <div id="boardAttack" class="game-board"></div>
+                </div>
+            </div>
+
+            <div id="weapons" class="weapons-container">
+            </div>
+
+            <div id="ships" class="ships-container">
+            </div>
+
+            <div id="controls" class="controls-container">
+            </div>
+        </div>
+
+        <script type="text/javascript" src="battle-core.js"></script>
+        <script type="text/javascript" src="war.js"></script>
+    </body>
+</html>

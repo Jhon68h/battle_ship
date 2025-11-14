@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batalla Naval - Menú Principal</title>
+    <link rel="stylesheet" href="menu.css">
+</head>
+<body>
+    <div class="menu-container">
+        <header class="menu-header">
+            <h1>⚓ BATALLA NAVAL ⚓</h1>
+            <p class="subtitle">Elige tu modo de juego y demuestra tu estrategia</p>
+        </header>
+
+        <div class="menu-content">
+            <div class="game-modes">
+                <div class="mode-card classic-mode">
+                    <div class="mode-icon">🎯</div>
+                    <h2>Modo Clásico</h2>
+                    <p>Juego tradicional de batalla naval</p>
+                    <ul class="mode-features">
+                        <li>Tablero 10x10</li>
+                        <li>5 barcos estándar</li>
+                        <li>Reglas clásicas</li>
+                    </ul>
+                    <button onclick="location.href='classic.html'" class="btn-play classic-btn">
+                        JUGAR CLÁSICO
+                    </button>
+                </div>
+
+                <div class="mode-card war-mode">
+                    <div class="mode-icon">💣</div>
+                    <h2>Modo Guerra</h2>
+                    <p>¡Batalla épica con armas especiales!</p>
+                    <ul class="mode-features">
+                        <li>Tablero 12x12</li>
+                        <li>10 barcos (2 de cada tipo)</li>
+                        <li>Bombas y Misiles especiales</li>
+                    </ul>
+                    <button onclick="location.href='war.html'" class="btn-play war-btn">
+                        JUGAR GUERRA
+                    </button>
+                </div>
+            </div>
+
+            <div class="menu-buttons">
+                <button onclick="showHistory()" class="btn-secondary">
+                    📊 Ver Historial
+                </button>
+                <button onclick="showInstructions()" class="btn-secondary">
+                    ❓ Instrucciones
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="historyModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2>Historial de Partidas</h2>
+            <div id="historyContent"></div>
+            <button onclick="closeHistory()" class="btn-primary">Cerrar</button>
+        </div>
+    </div>
+
+    <div id="instructionsModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2>Instrucciones</h2>
+            <div class="instructions-content">
+                <h3>Modo Clásico</h3>
+                <p>Juego tradicional de batalla naval en tablero 10x10 con 5 barcos.</p>
+                
+                <h3>Modo Guerra</h3>
+                <p>Batalla épica en tablero 12x12 con 10 barcos y armas especiales:</p>
+                <ul>
+                    <li><strong>Bomba 💣:</strong> Ataque en área 3x3</li>
+                    <li><strong>Misil 🚀:</strong> Ataque lineal de 3 casillas (horizontal o vertical)</li>
+                </ul>
+            </div>
+            <button onclick="closeInstructions()" class="btn-primary">Entendido</button>
+        </div>
+    </div>
+
+    <script src="menu.js"></script>
+</body>
+</html>

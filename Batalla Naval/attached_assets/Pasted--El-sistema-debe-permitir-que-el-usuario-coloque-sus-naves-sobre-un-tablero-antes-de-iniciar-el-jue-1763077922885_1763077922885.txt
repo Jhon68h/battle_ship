@@ -1,0 +1,22 @@
+●	El sistema debe permitir que el usuario coloque sus naves sobre un tablero antes de iniciar el juego.
+●	El sistema debe tener fases de juego (Preparación de partida, ataque, final)
+●	El sistema debe tener un botones para: Nueva partida, partidas anteriores(resultados almacenados en local storage), modo de juego
+●	Cuando se da nueva partida, el sistema debe permitir la colocación de las naves, y una vez estén todas colocadas, activar un botón para empezar partida
+●	El sistema debe permitir SOLAMENTE la siguiente cantidad de naves para cada jugador (jugador y pc): 1 barco de 5 casillas, 1 barco de 4 casillas, 2 barcos de 3 casillas, 1 barco de 2 casillas
+●	El sistema debe tener la opción de seleccionar un barco y colocarlo en el tablero, este barco debe estar colorido hasta agotar existencias
+●	El sistema debe generar posiciones aleatorias válidas para las naves del oponente (PC).
+●	El sistema no debe permitir el turno siguiente, si el rival no ha finalizado el suyo, si es el turno del jugador, este solo puede jugar si la maquina ya jugó
+●	El sistema debe permitir al usuario realizar disparos en el tablero enemigo y recibir retroalimentación inmediata (acierto o fallo).
+●	El sistema debe permitir que el PC responda automáticamente con un disparo aleatorio sobre el tablero del jugador.
+●	El sistema debe detectar el fin del juego cuando todas las naves de uno de los jugadores sean destruidas.
+●	El sistema debe mostrar visualmente los estados de las celdas (vacía, ocupada, golpe, fallo).
+●	El sistema debe bloquear interacciones inválidas (disparar sobre una celda ya atacada, colocar un barco fuera de el panel, colocar un barco sobre otro barco, permitir solo la cantidad de barcos establecida.).
+●	Cuando la partida acabe, debe aparecer una ventana emergente que diga el ganador, no debe ser una ventana del navegador, tiene que ser una ventana de la app
+●	El sistema debe contar con una pantalla(html) aparte donde aparezcan las opciones de nueva partida, partidas anteriores, modo de juego
+●	Debe tener 2 modos de juego, clasico, donde es el juego con las reglas normales, y modo guerra
+●	El sistema debe tener el modo de juego “modo guerra” donde las reglas son las siguientes
+○	Hay dos barcos por cada barco
+○	El tablero se expande 2 columnas y 2 filas más
+○	TIene la opción de una bomba que hace daño en un area de 3x3
+○	Tiene la opción de un misil que hace daño en una fila o columna de 3 de largo (se puede alternar entre fila y columna)
+●	EL juego debe generar dos paginas distintas, una para cada modo
