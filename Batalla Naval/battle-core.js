@@ -210,49 +210,49 @@ class GameEngine {
         container.innerHTML = '<h4>Selecciona tus naves:</h4>';
 
         this.shipCounts.forEach((ship, index) => {
-            const shipDiv = document.createElement('div');
-            shipDiv.className = 'ship-selector';
-            shipDiv.dataset.index = index;
+            // Crear un solo elemento de nave con contador
+            const shipItem = document.createElement('div');
+            shipItem.className = 'ship-item';
+            shipItem.dataset.type = index;
+            
+            const nameEl = document.createElement('div');
+            nameEl.className = 'ship-name';
+            nameEl.textContent = ship.name;
+            
+            const sizeEl = document.createElement('div');
+            sizeEl.className = 'ship-size';
+            sizeEl.textContent = `${ship.size}`;
 
-            for (let i = 0; i < ship.quantity; i++) {
-                const shipItem = document.createElement('div');
-                shipItem.className = 'ship-item';
-                shipItem.dataset.type = index;
-                shipItem.dataset.instance = i;
-                
-                const nameEl = document.createElement('div');
-                nameEl.className = 'ship-name';
-                nameEl.textContent = ship.name;
-                
-                const sizeEl = document.createElement('div');
-                sizeEl.className = 'ship-size';
-                sizeEl.textContent = `Tamaño: ${ship.size}`;
+            // Mostrar cuántas naves quedan por colocar
+            const countEl = document.createElement('div');
+            countEl.className = 'ship-count';
+            countEl.textContent = ship.quantity - ship.placed;
+            countEl.id = `count-${index}`;
 
-                const orientations = document.createElement('div');
-                orientations.className = 'orientations';
+            const orientations = document.createElement('div');
+            orientations.className = 'orientations';
 
-                const horizBtn = document.createElement('button');
-                horizBtn.className = 'orientation-btn horizontal-btn';
-                horizBtn.textContent = '―';
-                horizBtn.dataset.orientation = 'horizontal';
-                horizBtn.onclick = () => this.selectShip(index, 'horizontal', shipItem);
+            const horizBtn = document.createElement('button');
+            horizBtn.className = 'orientation-btn horizontal-btn';
+            horizBtn.textContent = '―';
+            horizBtn.dataset.orientation = 'horizontal';
+            horizBtn.onclick = () => this.selectShip(index, 'horizontal', shipItem);
 
-                const vertBtn = document.createElement('button');
-                vertBtn.className = 'orientation-btn vertical-btn';
-                vertBtn.textContent = '|';
-                vertBtn.dataset.orientation = 'vertical';
-                vertBtn.onclick = () => this.selectShip(index, 'vertical', shipItem);
+            const vertBtn = document.createElement('button');
+            vertBtn.className = 'orientation-btn vertical-btn';
+            vertBtn.textContent = '|';
+            vertBtn.dataset.orientation = 'vertical';
+            vertBtn.onclick = () => this.selectShip(index, 'vertical', shipItem);
 
-                orientations.appendChild(horizBtn);
-                orientations.appendChild(vertBtn);
+            orientations.appendChild(horizBtn);
+            orientations.appendChild(vertBtn);
 
-                shipItem.appendChild(nameEl);
-                shipItem.appendChild(sizeEl);
-                shipItem.appendChild(orientations);
-                shipDiv.appendChild(shipItem);
-            }
+            shipItem.appendChild(nameEl);
+            shipItem.appendChild(sizeEl);
+            shipItem.appendChild(orientations);
+            shipItem.appendChild(countEl);
 
-            container.appendChild(shipDiv);
+            container.appendChild(shipItem);
         });
     }
 
@@ -267,6 +267,10 @@ class GameEngine {
         weaponsDiv.className = 'weapons-grid';
 
         this.weapons.forEach((weapon, index) => {
+            // Crear un contenedor para cada arma
+            const weaponItemDiv = document.createElement('div');
+            weaponItemDiv.className = 'weapon-item';
+            
             const weaponBtn = document.createElement('button');
             weaponBtn.className = 'weapon-btn';
             weaponBtn.dataset.index = index;
@@ -285,22 +289,39 @@ class GameEngine {
                 weaponBtn.classList.add('selected');
             }
 
-            weaponsDiv.appendChild(weaponBtn);
+            weaponItemDiv.appendChild(weaponBtn);
+
+            // Agregar botones de orientación si es misil
+            if (weapon instanceof MissileWeapon) {
+                const orientations = document.createElement('div');
+                orientations.className = 'weapon-orientations';
+                
+                const horizBtn = document.createElement('button');
+                horizBtn.className = 'orientation-btn horizontal-btn';
+                horizBtn.textContent = '―';
+                horizBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    this.setMissileOrientation('horizontal');
+                };
+                horizBtn.classList.add('selected');
+
+                const vertBtn = document.createElement('button');
+                vertBtn.className = 'orientation-btn vertical-btn';
+                vertBtn.textContent = '|';
+                vertBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    this.setMissileOrientation('vertical');
+                };
+
+                orientations.appendChild(horizBtn);
+                orientations.appendChild(vertBtn);
+                weaponItemDiv.appendChild(orientations);
+            }
+
+            weaponsDiv.appendChild(weaponItemDiv);
         });
 
         container.appendChild(weaponsDiv);
-
-        if (this.weapons.some(w => w instanceof MissileWeapon)) {
-            const orientationDiv = document.createElement('div');
-            orientationDiv.id = 'missileOrientation';
-            orientationDiv.className = 'missile-orientation';
-            orientationDiv.style.display = 'none';
-            orientationDiv.innerHTML = `
-                <button onclick="game.setMissileOrientation('horizontal')" class="orientation-btn selected">― Horizontal</button>
-                <button onclick="game.setMissileOrientation('vertical')" class="orientation-btn">| Vertical</button>
-            `;
-            container.appendChild(orientationDiv);
-        }
     }
 
     selectWeapon(index, btn) {
@@ -309,22 +330,17 @@ class GameEngine {
         document.querySelectorAll('.weapon-btn').forEach(el => el.classList.remove('selected'));
         btn.classList.add('selected');
         this.selectedWeapon = this.weapons[index];
-
-        const missileOrientationDiv = document.getElementById('missileOrientation');
-        if (missileOrientationDiv) {
-            missileOrientationDiv.style.display = this.selectedWeapon instanceof MissileWeapon ? 'block' : 'none';
-        }
     }
 
     setMissileOrientation(orientation) {
         const missile = this.weapons.find(w => w instanceof MissileWeapon);
         if (missile) {
             missile.setOrientation(orientation);
-            const buttons = document.querySelectorAll('#missileOrientation .orientation-btn');
+            const buttons = document.querySelectorAll('.weapon-orientations .orientation-btn');
             buttons.forEach(btn => {
                 btn.classList.toggle('selected', 
-                    (orientation === 'horizontal' && btn.textContent.includes('Horizontal')) ||
-                    (orientation === 'vertical' && btn.textContent.includes('Vertical'))
+                    (orientation === 'horizontal' && btn.textContent.includes('―')) ||
+                    (orientation === 'vertical' && btn.textContent.includes('|'))
                 );
             });
         }
@@ -335,11 +351,13 @@ class GameEngine {
         controls.innerHTML = `
             <button id="startBtn" class="btn-primary" disabled>Iniciar Batalla</button>
             <button id="newGameBtn" class="btn-secondary">Nueva Partida</button>
+            <button id="historyBtn" class="btn-secondary">📊 Historial</button>
             <button id="menuBtn" class="btn-secondary">Menú Principal</button>
             <button id="helpBtn" class="btn-info">?</button>
         `;
 
         document.getElementById('newGameBtn').onclick = () => this.newGame();
+        document.getElementById('historyBtn').onclick = () => this.showHistory();
         document.getElementById('menuBtn').onclick = () => window.location.href = 'menu.html';
         document.getElementById('startBtn').onclick = () => this.startBattle();
         document.getElementById('helpBtn').onclick = () => this.showInstructions();
@@ -454,15 +472,24 @@ class GameEngine {
 
         this.shipCounts[this.selectedShipType].placed++;
         
+        // Actualizar contador de naves disponibles
+        const countEl = document.getElementById(`count-${this.selectedShipType}`);
+        if (countEl) {
+            countEl.textContent = this.shipCounts[this.selectedShipType].quantity - this.shipCounts[this.selectedShipType].placed;
+        }
+
         const selectedItem = document.querySelector('.ship-item.selected');
         if (selectedItem) {
-            selectedItem.style.opacity = '0.3';
-            selectedItem.style.pointerEvents = 'none';
+            selectedItem.classList.remove('selected');
+            // Desactivar si no hay más naves de este tipo
+            if (this.shipCounts[this.selectedShipType].placed >= this.shipCounts[this.selectedShipType].quantity) {
+                selectedItem.style.opacity = '0.5';
+                selectedItem.style.pointerEvents = 'none';
+            }
         }
 
         this.selectedShipType = null;
         this.selectedOrientation = 'horizontal';
-        document.querySelectorAll('.ship-item').forEach(el => el.classList.remove('selected'));
         
         this.clearPreview();
         this.checkAllShipsPlaced();
@@ -496,24 +523,80 @@ class GameEngine {
 
         if (placedShips === totalShips) {
             document.getElementById('startBtn').disabled = false;
-            this.showMessage('¡Todas las naves colocadas! Ya puedes iniciar la batalla.', 'success');
+            this.showReadyModal();
         }
+    }
+
+    showReadyModal() {
+        const modal = document.createElement('div');
+        modal.className = 'ready-modal';
+        modal.innerHTML = `
+            <div class="ready-modal-content">
+                <div class="ready-checkmark">✅</div>
+                <h2>¡Naves Listas!</h2>
+                <p>Todos tus barcos han sido colocados correctamente.</p>
+                <p class="ready-subtext">Haz clic en el botón para comenzar la batalla.</p>
+                <button class="btn-primary" onclick="game.startBattle()">⚔️ Iniciar Batalla</button>
+            </div>
+        `;
+        
+        modal.onclick = (e) => {
+            if (e.target === modal) {
+                modal.remove();
+            }
+        };
+        
+        document.body.appendChild(modal);
+        
+        // Auto cerrar después de 4 segundos si no se hace clic
+        setTimeout(() => {
+            if (modal.parentElement) {
+                modal.remove();
+            }
+        }, 4000);
     }
 
     startBattle() {
         this.state.phase = 'BATTLE';
         this.updatePhaseDisplay();
         this.placePCShips();
+        
+        // Verificar cantidad de barcos del PC
+        const pcShipCount = this.state.pcShips.length;
+        const playerShipCount = this.state.playerShips.length;
+        const expectedShipCount = this.config.ships.reduce((sum, ship) => sum + ship.quantity, 0);
+        
+        console.log(`Barcos del Jugador: ${playerShipCount}`);
+        console.log(`Barcos del PC: ${pcShipCount}`);
+        console.log(`Barcos Esperados: ${expectedShipCount}`);
+        
+        // Si el PC no tiene la cantidad correcta de barcos, reintentar
+        if (pcShipCount !== expectedShipCount) {
+            console.warn(`Error: El PC tiene ${pcShipCount} barcos, se esperaban ${expectedShipCount}. Reintentando...`);
+            this.placePCShips();
+        }
+        
         document.getElementById('startBtn').style.display = 'none';
+        // Ocultar contenedor de naves durante la batalla
+        const shipsContainer = document.getElementById('ships');
+        if (shipsContainer) {
+            shipsContainer.style.display = 'none';
+        }
         this.showMessage('¡La batalla ha comenzado! Dispara al tablero enemigo.', 'info');
     }
 
     placePCShips() {
+        // Reiniciar el tablero del PC
+        this.state.pcBoard = Array(this.config.boardSize).fill(null).map(() => Array(this.config.boardSize).fill(null));
+        this.state.pcShips = [];
+        
         this.config.ships.forEach(shipConfig => {
             for (let i = 0; i < shipConfig.quantity; i++) {
                 let placed = false;
                 let attempts = 0;
-                while (!placed && attempts < 1000) {
+                const maxAttempts = 500;
+                
+                while (!placed && attempts < maxAttempts) {
                     attempts++;
                     const orientation = Math.random() < 0.5 ? 'horizontal' : 'vertical';
                     const row = Math.floor(Math.random() * this.config.boardSize);
@@ -528,6 +611,12 @@ class GameEngine {
                         });
                         placed = true;
                     }
+                }
+                
+                // Si no se pudo colocar después de los intentos, reintentar con otro tipo
+                if (!placed && attempts >= maxAttempts) {
+                    console.warn(`No se pudo colocar ${shipConfig.name} del PC. Reintentando...`);
+                    i--; // Reintenta este barco
                 }
             }
         });
@@ -561,8 +650,14 @@ class GameEngine {
             this.selectedWeapon.uses--;
             if (this.selectedWeapon.uses === 0) {
                 this.weapons = this.weapons.filter(w => w !== this.selectedWeapon);
-                this.selectedWeapon = this.weapons[0];
+                this.selectedWeapon = this.weapons.length > 0 ? this.weapons[0] : null;
                 this.renderWeaponSelection();
+                
+                // Ocultar contenedor de armas si no hay más armas especiales
+                const weaponsContainer = document.getElementById('weapons');
+                if (weaponsContainer && this.weapons.length <= 1) {
+                    weaponsContainer.style.display = 'none';
+                }
             } else {
                 this.renderWeaponSelection();
             }
@@ -755,6 +850,50 @@ class GameEngine {
     closeInstructions() {
         const modal = document.getElementById('instructionsModal');
         if (modal) modal.remove();
+    }
+
+    showHistory() {
+        const history = this.state.gameHistory;
+        
+        if (history.length === 0) {
+            this.showMessage('No hay partidas guardadas aún.', 'info');
+            return;
+        }
+
+        const historyHTML = `
+            <div class="history-modal">
+                <div class="history-content">
+                    <h2>📊 Historial de Partidas</h2>
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Ganador</th>
+                                <th>Tus Impactos</th>
+                                <th>Impactos PC</th>
+                                <th>Duración</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${history.map((game, index) => `
+                                <tr class="history-row ${game.winner === 'Jugador' ? 'victory' : 'defeat'}">
+                                    <td>${game.date}</td>
+                                    <td>${game.winner === 'Jugador' ? '🏆 Jugador' : '💀 PC'}</td>
+                                    <td>${game.playerHits}</td>
+                                    <td>${game.pcHits}</td>
+                                    <td>${game.duration}s</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    <button onclick="document.querySelector('.history-modal').remove()" class="btn-primary">Cerrar</button>
+                </div>
+            </div>
+        `;
+
+        const modal = document.createElement('div');
+        modal.innerHTML = historyHTML;
+        document.body.appendChild(modal);
     }
 
     showMessage(text, type) {
